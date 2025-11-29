@@ -32,7 +32,8 @@ kotlin {
             // Ktor Android engine
             implementation("io.ktor:ktor-client-okhttp:2.3.10")
         }
-        // ✅ Missing iOS source set
+
+        //  iOS source set
         val iosMain by creating {
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:2.3.10")
