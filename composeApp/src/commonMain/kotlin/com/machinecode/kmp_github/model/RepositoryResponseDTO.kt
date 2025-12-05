@@ -1,7 +1,9 @@
 package com.machinecode.kmp_github.model
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RepositoryResponseDTO(
     @SerialName("total_count") val totalCount: Int? = null,
     @SerialName("incomplete_results") val incompleteResults: Boolean? = null,
@@ -16,6 +18,7 @@ data class RepositoryResponseDTO(
     }
 }
 
+@Serializable
 data class RepositoryDTO(
     @SerialName("id") val id: Int? = null,
     @SerialName("node_id") val nodeId: String? = null,
@@ -41,6 +44,7 @@ data class RepositoryDTO(
     var ownerId: Int? = null,
 )
 
+@Serializable
 data class OwnerDTO(
     @SerialName("login") val login: String? = null,
     @SerialName("id") val id: Int? = null,
