@@ -11,4 +11,4 @@ class IOSPlatform : Platform {
 
 actual fun getPlatform(): Platform = IOSPlatform()
 
-actual fun provideEngine(): HttpClientEngineFactory<*> = Darwin
+//actual fun provideEngine(): HttpClientEngineFactory<*> = Darwin

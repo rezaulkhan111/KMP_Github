@@ -10,4 +10,4 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual fun provideEngine(): HttpClientEngineFactory<*> = OkHttp
+//actual fun provideEngine(): HttpClientEngineFactory<*> = OkHttp

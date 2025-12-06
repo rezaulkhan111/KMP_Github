@@ -6,21 +6,20 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class GithubApi {
-    suspend fun getUser(username: String): GithubUser {
-        return httpClient.get("https://api.github.com/users/$username").body()
-    }
 
     suspend fun getRepository(username: String): RepositoryResponseDTO {
-        return httpClient.get("https://api.github.com/search/repositories$username").body()
+//        return httpClient.get("https://api.github.com/search/repositories$username").body()
+        return RepositoryResponseDTO()
     }
 
     suspend fun getRepository(queryData: Map<String, Any>): RepositoryResponseDTO {
-        return httpClient.get("https://api.github.com/search/repositories") {
-            url {
-                queryData.forEach { (key, value) ->
-                    parameters.append(key, value.toString())
-                }
-            }
-        }.body()
+//        return httpClient.get("https://api.github.com/search/repositories") {
+//            url {
+//                queryData.forEach { (key, value) ->
+//                    parameters.append(key, value.toString())
+//                }
+//            }
+//        }.body()
+        return RepositoryResponseDTO()
     }
 }

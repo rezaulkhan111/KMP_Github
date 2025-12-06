@@ -18,18 +18,6 @@ class GithubVM {
     private val _repository = MutableStateFlow<List<RepositoryDTO>?>(null)
     val repository: StateFlow<List<RepositoryDTO>?> = _repository
 
-    fun fetchUser(username: String) {
-        vmScope.launch {
-            try {
-                val result = api.getUser(username)
-                _user.value = result
-            } catch (e: Exception) {
-                println("Error loading GitHub user: $e")
-                _user.value = null
-            }
-        }
-    }
-
     fun fetchRepository(mQuery: String) {
         vmScope.launch {
             try {

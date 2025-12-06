@@ -8,13 +8,13 @@ import kotlinx.serialization.json.Json
 
 
 // Shared HttpClient
-val httpClient = HttpClient(provideEngine()) {
-    install(ContentNegotiation) {
-        json(
-            Json {
-                prettyPrint = true
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-    }
-}
+//val httpClient = HttpClient(provideEngine()) {
+//    install(ContentNegotiation) {
+//        json(
+//            Json {
+//                prettyPrint = true
+//                ignoreUnknownKeys = true
+//                isLenient = true
+//            })
+//    }
+//}
