@@ -1,7 +1,5 @@
 package com.machinecode.kmp_github
 
-import io.ktor.client.engine.HttpClientEngineFactory
-import io.ktor.client.engine.darwin.Darwin
 import platform.UIKit.UIDevice
 
 class IOSPlatform : Platform {
@@ -10,5 +8,3 @@ class IOSPlatform : Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
-
-//actual fun provideEngine(): HttpClientEngineFactory<*> = Darwin
