@@ -1,4 +1,4 @@
-package com.machinecode.kmp_github.model
+package com.machinecode.kmp_github.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

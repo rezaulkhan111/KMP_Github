@@ -16,53 +16,46 @@ kotlin {
         }
     }
 
-    iosArm64()
-    iosSimulatorArm64()
-
     listOf(
-        iosArm64(), iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
+        iosX64(), iosArm64(), iosSimulatorArm64()
+    ).forEach { itTarget->
+        itTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
         }
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                // Compose
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.lifecycle.viewmodelCompose)
-                implementation(libs.androidx.lifecycle.runtimeCompose)
+        commonMain.dependencies {
+            // Compose
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
 
-                // Ktor shared
-                implementation("io.ktor:ktor-client-core:2.3.10")
-                implementation("io.ktor:ktor-client-content-negotiation:2.3.10")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.10")
-                // Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-            }
+            implementation("io.ktor:ktor-client-logging:3.3.3")
+            // Ktor shared
+            implementation("io.ktor:ktor-client-core:3.3.3")
+            implementation("io.ktor:ktor-client-content-negotiation:3.3.3")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
+            // Coroutines
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
         }
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation("io.ktor:ktor-client-okhttp:2.3.10")
+            implementation("io.ktor:ktor-client-okhttp:3.3.3")
         }
-        val iosMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-                implementation("io.ktor:ktor-client-darwin:2.3.10")
-            }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:3.3.3")
         }
 
-        iosArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
-        iosSimulatorArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
+//        iosArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
+//        iosSimulatorArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
     }
 }
 

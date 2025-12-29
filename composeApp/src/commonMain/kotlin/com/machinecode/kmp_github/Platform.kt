@@ -1,11 +1,7 @@
 package com.machinecode.kmp_github
 
-import io.ktor.client.engine.HttpClientEngineFactory
-
-interface Platform {
-    val name: String
+enum class Platform {
+    ANDROID, IOS
 }
 
 expect fun getPlatform(): Platform
-
-//expect fun provideEngine(): HttpClientEngineFactory<*>
