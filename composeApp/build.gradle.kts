@@ -44,7 +44,7 @@ kotlin {
             implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
             // Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
         }
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
