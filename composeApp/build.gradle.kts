@@ -38,6 +38,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation("io.ktor:ktor-client-logging:3.3.3")
+
+            implementation("io.insert-koin:koin-core:3.5.3")
             // Ktor shared
             implementation("io.ktor:ktor-client-core:3.3.3")
             implementation("io.ktor:ktor-client-content-negotiation:3.3.3")
@@ -49,6 +51,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+
+            implementation("io.insert-koin:koin-android:3.5.3")
             implementation("io.ktor:ktor-client-okhttp:3.3.3")
         }
         iosMain.dependencies {
@@ -85,6 +89,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlin {
+        androidTarget()
     }
 }
 
