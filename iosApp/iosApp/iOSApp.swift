@@ -1,10 +1,11 @@
 import SwiftUI
+import ComposeApp
 
 @main
 struct iOSApp: App {
-    // init() {
-    //     initKoin()
-    // }
+    init() {
+        KoinInitializer.init()
+    }
 
     var body: some Scene {
         WindowGroup {

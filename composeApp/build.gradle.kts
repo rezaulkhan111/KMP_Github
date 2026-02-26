@@ -51,10 +51,12 @@ kotlin {
             // 🔥 Coil 3 Multiplatform
             implementation("io.coil-kt.coil3:coil-compose:3.3.0")
 
-//            implementation(compose.materialIconsCore)
-//            implementation(compose.materialIconsExtended)
-
             implementation("org.jetbrains.compose.material:material-icons-extended:1.6.10")
+
+            // Koin dependencies
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
@@ -62,6 +64,8 @@ kotlin {
 
             implementation("io.insert-koin:koin-android:3.5.3")
             implementation("io.ktor:ktor-client-okhttp:3.3.3")
+
+            implementation(libs.koin.android)
         }
         iosMain.dependencies {
             implementation("io.ktor:ktor-client-darwin:3.3.3")

@@ -1,11 +1,20 @@
 package com.machinecode.kmp_github.di
 
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
-import org.koin.dsl.KoinAppDeclaration
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
-    startKoin {
-        appDeclaration()
-        modules(commonModule)
+//fun initKoin(appDeclaration: (KoinApplication.() -> Unit)? = null) {
+//    startKoin {
+//        appDeclaration?.invoke(this)
+//        modules(commonModule)
+//    }
+//}
+
+object KoinInitializer {
+    fun init(appDeclaration: (KoinApplication.() -> Unit)? = null) {
+        startKoin {
+            appDeclaration?.invoke(this)
+            modules(commonModule)
+        }
     }
 }

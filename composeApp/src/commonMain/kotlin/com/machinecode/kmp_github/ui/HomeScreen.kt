@@ -44,19 +44,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.machinecode.kmp_github.domain.model.RepositoryDetails
-import com.machinecode.kmp_github.ui.viewmodel.ViewModelProvider
+import com.machinecode.kmp_github.ui.viewmodel.GithubVM
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
 fun GithubScreen() {
-    val viewModel = remember {
-        ViewModelProvider.provideGithubVM()
-    }
+    val viewModel: GithubVM = koinViewModel()
+//    val viewModel = remember {
+//        ViewModelProvider.provideGithubVM()
+//    }
+
     val repos by viewModel.repositories.collectAsState()
     val scope = rememberCoroutineScope()
-    var username by remember { mutableStateOf("Search Repo") }
+    var username by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
@@ -65,7 +68,7 @@ fun GithubScreen() {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("GitHub project") },
+            placeholder = { Text("Search Repo") },
             modifier = Modifier.fillMaxWidth()
         )
 
