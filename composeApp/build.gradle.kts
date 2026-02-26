@@ -47,6 +47,14 @@ kotlin {
             // Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+
+            // 🔥 Coil 3 Multiplatform
+            implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+
+//            implementation(compose.materialIconsCore)
+//            implementation(compose.materialIconsExtended)
+
+            implementation("org.jetbrains.compose.material:material-icons-extended:1.6.10")
         }
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
