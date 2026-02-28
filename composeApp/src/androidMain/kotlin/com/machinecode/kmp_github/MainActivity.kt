@@ -3,23 +3,17 @@ package com.machinecode.kmp_github
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.machinecode.kmp_github.ui.GithubScreen
+import com.machinecode.kmp_github.ui.navigation.NavHostScreen
+import com.machinecode.kmp_github.ui.theme.AndroidRepositoriesTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            GithubScreen()
+            AndroidRepositoriesTheme {
+                NavHostScreen()
+            }
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun AppAndroidPreview() {
-//    App()
-//}

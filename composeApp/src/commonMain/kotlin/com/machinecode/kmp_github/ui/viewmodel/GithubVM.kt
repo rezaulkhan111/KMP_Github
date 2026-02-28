@@ -61,8 +61,7 @@ class GithubVM(private val repo: GithubRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 if (!query.isNullOrEmpty()) {
-                    when (val result =
-                        repo.fetchRepository(query, currentPage, mPerPageItem)) {
+                    when (val result = repo.fetchRepository(query, currentPage, mPerPageItem)) {
                         is ApiResult.Success -> {
                             val mappedData =
                                 result.data.items?.map { it.toDomainModel() } ?: emptyList()
@@ -118,13 +117,12 @@ class GithubVM(private val repo: GithubRepository) : ViewModel() {
         }
     }
 
-//    fun getRepositoryById(repoId: Int?) {
-//        if (repoId != null) {
-//            viewModelScope.launch {
-//                repository.getRepositoryWithOwnerById(repoId).collect { repoOwner ->
-//                    _repositoryDetails.value = repoOwner.toDomainModel()
-//                }
-//            }
-//        }
-//    }
+    fun getRepositoryById(repoId: Int?) {
+        if (repoId != null) {
+            viewModelScope.launch {
+                _repositoryDetails.value =
+                    _repositories.value.find { repoOwner -> repoOwner.id == repoId }
+            }
+        }
+    }
 }

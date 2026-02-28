@@ -50,6 +50,7 @@ kotlin {
 
             // 🔥 Coil 3 Multiplatform
             implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+            implementation("io.coil-kt.coil3:coil-network-ktor3:3.3.0")
 
             implementation("org.jetbrains.compose.material:material-icons-extended:1.6.10")
 
@@ -57,6 +58,8 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
         }
         androidMain.dependencies {
             implementation(libs.androidx.compose.ui.tooling.preview)
@@ -66,9 +69,13 @@ kotlin {
             implementation("io.ktor:ktor-client-okhttp:3.3.3")
 
             implementation(libs.koin.android)
+
+            implementation("io.coil-kt.coil3:coil:3.3.0")
         }
         iosMain.dependencies {
             implementation("io.ktor:ktor-client-darwin:3.3.3")
+
+            implementation("io.coil-kt.coil3:coil:3.3.0")
         }
 
 //        iosArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)

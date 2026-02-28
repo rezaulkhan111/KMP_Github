@@ -7,6 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,24 +18,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.StarOutline
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,54 +47,104 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.machinecode.kmp_github.domain.model.RepositoryDetails
 import com.machinecode.kmp_github.ui.viewmodel.GithubVM
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun GithubScreen() {
+fun HomeScreen(
+    onRepoClick: (RepositoryDetails) -> Unit
+) {
     val viewModel: GithubVM = koinViewModel()
-//    val viewModel = remember {
-//        ViewModelProvider.provideGithubVM()
-//    }
+//    val context = LocalContext.current
 
-    val repos by viewModel.repositories.collectAsState()
-    val scope = rememberCoroutineScope()
-    var username by remember { mutableStateOf("") }
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val repositories by viewModel.repositories.collectAsState()
+    val fetchStatus by viewModel.fetchStatus.collectAsState()
+    val canFetchMessage by viewModel.messageFetch.collectAsState()
+    val listState = rememberLazyListState()
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
-    ) {
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo }.map { it.visibleItemsInfo.lastOrNull()?.index }
+            .distinctUntilChanged().collect { lastVisibleIndex ->
+                val totalCount = repositories.size
+                if (lastVisibleIndex != null && lastVisibleIndex >= totalCount - 1) {
+                    viewModel.fetchRepositories(viewModel.searchQuery.value)
+                }
+            }
+    }
 
-        OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            placeholder = { Text("Search Repo") },
-            modifier = Modifier.fillMaxWidth()
-        )
+    LaunchedEffect(fetchStatus) {
+        if (fetchStatus == false) {
+//            Toast.makeText(context, "No internet. Showing local data.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-        Spacer(Modifier.height(12.dp))
+    LaunchedEffect(canFetchMessage) {
+        canFetchMessage?.let {
+//            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearCanFetchMessage()
+        }
+    }
 
-        Button(
-            onClick = {
-                scope.launch { viewModel.fetchRepositories(username) }
-            }, modifier = Modifier.align(Alignment.End)
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Load Repos")
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = viewModel::onSearchQueryChange,
+                modifier = Modifier.testTag("ttSearchInput").weight(1f).height(56.dp),
+                placeholder = { Text("Search") },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(
+                modifier = Modifier.testTag("ttBtnSearch"), onClick = viewModel::onSearchClick
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = "Search",
+                    tint = if (isSystemInDarkTheme()) Color.White else Color.Black
+                )
+            }
+
+            IconButton(
+                modifier = Modifier.testTag("ttBtnSort"), onClick = viewModel::toggleSortByStars
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Sort,
+                    contentDescription = "Sort",
+                    tint = if (isSystemInDarkTheme()) Color.White else Color.Black
+                )
+            }
         }
 
-        Spacer(Modifier.height(20.dp))
-
-        // 📦 Repo List
-        if (repos.isEmpty()) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text("No repositories loaded yet.", modifier = Modifier.align(Alignment.Center))
+        if (repositories.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No repositories found",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.testTag("ttEmptyStateText")
+                )
             }
         } else {
-            LazyColumn {
-                items(repos) { repo ->
-                    RepositoryItemCard(repo, onClick = { /*onRepoClick(repo)*/ })
+            LazyColumn(
+                modifier = Modifier.testTag("ttLcRepository"),
+                state = listState,
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(repositories) { repo ->
+                    RepositoryItemCard(repo, onClick = { onRepoClick(repo) })
                 }
             }
         }

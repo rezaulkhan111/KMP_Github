@@ -12,6 +12,8 @@ import org.koin.core.context.startKoin
 
 object KoinInitializer {
     fun init(appDeclaration: (KoinApplication.() -> Unit)? = null) {
+        println("KOIN START CALLED")
+
         startKoin {
             appDeclaration?.invoke(this)
             modules(commonModule)
