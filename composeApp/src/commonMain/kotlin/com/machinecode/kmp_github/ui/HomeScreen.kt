@@ -54,9 +54,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
-fun HomeScreen(
-    onRepoClick: (RepositoryDetails) -> Unit
-) {
+fun HomeScreen() {
+//  val  onRepoClick: (RepositoryDetails) -> Unit
     val viewModel: GithubVM = koinViewModel()
 //    val context = LocalContext.current
 
@@ -144,7 +143,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(repositories) { repo ->
-                    RepositoryItemCard(repo, onClick = { onRepoClick(repo) })
+                    RepositoryItemCard(repo, onClick = { /*onRepoClick(repo)*/ })
                 }
             }
         }

@@ -1,24 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
     androidTarget {
-//        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
     listOf(
-        iosX64(), iosArm64(), iosSimulatorArm64()
-    ).forEach { itTarget->
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { itTarget ->
         itTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
@@ -30,56 +31,51 @@ kotlin {
             // Compose
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            implementation("io.ktor:ktor-client-logging:3.3.3")
-
-            implementation("io.insert-koin:koin-core:3.5.3")
-            // Ktor shared
-            implementation("io.ktor:ktor-client-core:3.3.3")
-            implementation("io.ktor:ktor-client-content-negotiation:3.3.3")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.androidx.navigation3.ui)
+            implementation(libs.androidx.navigation3.material3.adaptive)
+            implementation(libs.androidx.lifecycle)
+            implementation(libs.compose.material3.windowSizeClass)
+            implementation(libs.compose.material3.adaptive.navigation)
+            implementation(libs.compose.material3.adaptive)
+            implementation(libs.compose.material3.adaptive.layout)
+            implementation(libs.compose.material3.adaptive.navigation.suite)
             // Coroutines
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
-
             // 🔥 Coil 3 Multiplatform
             implementation("io.coil-kt.coil3:coil-compose:3.3.0")
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.3.0")
-
             implementation("org.jetbrains.compose.material:material-icons-extended:1.6.10")
 
             // Koin dependencies
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
         }
         androidMain.dependencies {
-            implementation(libs.androidx.compose.ui.tooling.preview)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
-            implementation("io.insert-koin:koin-android:3.5.3")
-            implementation("io.ktor:ktor-client-okhttp:3.3.3")
-
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
 
             implementation("io.coil-kt.coil3:coil:3.3.0")
         }
         iosMain.dependencies {
-            implementation("io.ktor:ktor-client-darwin:3.3.3")
+            implementation(libs.ktor.client.darwin)
 
             implementation("io.coil-kt.coil3:coil:3.3.0")
         }
-
-//        iosArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
-//        iosSimulatorArm64().compilations["main"].defaultSourceSet.dependsOn(iosMain)
     }
 }
 
@@ -106,15 +102,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlin {
-        androidTarget()
+    dependencies {
+        debugImplementation(libs.compose.ui.tooling)
     }
-}
-
-dependencies {
-    debugImplementation(libs.androidx.compose.ui.tooling)
-}
+ }

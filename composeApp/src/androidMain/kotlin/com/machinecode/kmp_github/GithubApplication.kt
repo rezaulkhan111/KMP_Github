@@ -1,19 +1,18 @@
 package com.machinecode.kmp_github
 
 import android.app.Application
-import com.machinecode.kmp_github.di.KoinInitializer
+import com.machinecode.kmp_github.di.initKoinAndroid
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 
 class GithubApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        KoinInitializer.init {
+        initKoinAndroid {
+            androidLogger()
             androidContext(this@GithubApplication)
         }
-//        initKoin {
-//            androidContext(this@GithubApplication)
-//        }
     }
 }

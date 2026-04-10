@@ -1,6 +1,7 @@
 package com.machinecode.kmp_github.utils
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.number
 
 
 fun formatDate(inputDate: String, inputFormat: String, outputFormat: String): String {
@@ -8,8 +9,8 @@ fun formatDate(inputDate: String, inputFormat: String, outputFormat: String): St
 
         val localDateTime = LocalDateTime.parse(inputDate)
         val year = localDateTime.year.toString().padStart(4, '0')
-        val month = localDateTime.monthNumber.toString().padStart(2, '0')
-        val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
+        val month = localDateTime.month.number.toString().padStart(2, '0')
+        val day = localDateTime.day.toString().padStart(2, '0')
         val hour = localDateTime.hour.toString().padStart(2, '0')
         val minute = localDateTime.minute.toString().padStart(2, '0')
 
